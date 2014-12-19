@@ -1,0 +1,21 @@
+{
+    "authors": [
+        {
+            "name": "Eric Chau",
+            "email": "eriic.chau@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "URF\\Scope\\": "src/",
+            "URF\\Scope\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.4.0"
+    }
+}
