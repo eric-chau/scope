@@ -27,17 +27,17 @@ class Scope
      * Adds scope to list
      *
      * @param string  $scope  the scope name/identifier
-     * @param boolean $active define if provided scope has to be active now or not (default: false)
+     * @param boolean $enable define if provided scope has to be enable now or not (default: false)
      * @return self
      * @throws InvalidArgumentException if scope already exists in list or if provided type of scope is not string
      */
-    public function add($scope, $active = false)
+    public function add($scope, $enable = false)
     {
         if ($this->has($scope)) {
             throw new \InvalidArgumentException("`$scope` already exists in scope list");
         }
 
-        $this->scopes[$scope] = (boolean) $active;
+        $this->scopes[$scope] = (boolean) $enable;
 
         return $this;
     }
@@ -75,7 +75,7 @@ class Scope
      * @return self
      * @throws InvalidArgumentException if provided scope name is not in scope list
      */
-    public function active($scope)
+    public function enable($scope)
     {
         $this->raiseExceptionIfScopeNotFound($scope);
         $this->scopes[$scope] = true;
@@ -84,10 +84,25 @@ class Scope
     }
 
     /**
-     * Checks if provided scope is active or not
+     * Disable provided scope
      *
      * @param  string $scope the scope name/identifier
-     * @return boolean true if scope is active, else false
+     * @return self
+     * @throws InvalidArgumentException if provided scope name is not in scope list
+     */
+    public function disable($scope)
+    {
+        $this->raiseExceptionIfScopeNotFound($scope);
+        $this->scopes[$scope] = false;
+
+        return $this;
+    }
+
+    /**
+     * Checks if provided scope is enable or not
+     *
+     * @param  string $scope the scope name/identifier
+     * @return boolean true if scope is enable, else false
      * @throws InvalidArgumentException if provided scope name is not in scope list
      */
     public function isActive($scope)
