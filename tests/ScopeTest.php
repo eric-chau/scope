@@ -88,8 +88,9 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::active
      * @covers ::add
+     * @covers ::disable
+     * @covers ::enable
      * @covers ::isActive
      * @covers ::raiseExceptionIfScopeNotFound
      */
@@ -98,22 +99,25 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $this->scope->add('foo');
         $this->assertFalse($this->scope->isActive('foo'));
 
-        $this->scope->active('foo');
+        $this->scope->enable('foo');
         $this->assertTrue($this->scope->isActive('foo'));
 
         $this->scope->add('bar', true);
         $this->assertTrue($this->scope->isActive('bar'));
+
+        $this->scope->disable('bar');
+        $this->assertFalse($this->scope->isActive('bar'));
     }
 
     /**
-     * @covers ::active
+     * @covers ::enable
      * @covers ::isActive
      * @covers ::raiseExceptionIfScopeNotFound
      */
-    public function test_isActive_and_active_raiseInvalidArgumentException()
+    public function test_isActive_and_enable_raiseInvalidArgumentException()
     {
         try {
-            $this->scope->active('foo');
+            $this->scope->enable('foo');
             $this->fail('An expected exception (InvalidArgumentException) has not been raised.');
         } catch (\Exception $e) {
             $this->assertInstanceOf('InvalidArgumentException', $e);
@@ -131,6 +135,7 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::add
+     * @covers ::disable
      * @covers ::getActives
      */
     public function test_getActives()
@@ -142,7 +147,9 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $this->scope->add('hello', true);
         $this->scope->add('world');
         $this->scope->add('urf');
-        $this->scope->active('urf');
+        $this->scope->enable('urf');
         $this->assertEquals(['hello', 'urf'], $this->scope->getActives());
+        $this->scope->disable('hello');
+        $this->assertEquals(['urf'], $this->scope->getActives());
     }
 }
